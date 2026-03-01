@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+/*
+  Redefine the `dark:` variant to respond to data-theme attribute instead of
+  only the OS media query. Handles all three states:
+    - data-theme="dark"  → explicit dark (even on light OS)
+    - data-theme="light" → explicit light (even on dark OS)
+    - no data-theme      → follows OS preference (dark is the app default)
+*/
+@custom-variant dark {
+  :root[data-theme="dark"] & { @slot; }
+  @media not (prefers-color-scheme: light) {
+    :root:not([data-theme="light"]) & { @slot; }
+  }
+}
+
+@theme {
+  --color-brand-ink: #163524;
+  --color-brand-leaf: #6f8a3a;
+  --color-gold: #c9a35a;
+
+  /* ===== Dark defaults ===== */
+  --color-bg: #0b0f12;
+  --color-surface: rgba(255,255,255,0.06);
+  --color-border: rgba(255,255,255,0.12);
+
+  --color-text: rgba(255,255,255,0.92);
+  --color-muted: rgba(255,255,255,0.72);
+  --color-subtle: rgba(255,255,255,0.55);
+
+  --radius-xl: 1.25rem;
+  --shadow-soft: 0 20px 60px rgba(0,0,0,0.45);
+  --max-layout: 1160px;
+}
+
+:root { color-scheme: dark; }
+html, body { height: 100%; }
+
+body {
+  background:
+    radial-gradient(900px 500px at 15% 30%, rgba(201,163,90,0.18), transparent 55%),
+    radial-gradient(900px 500px at 85% 20%, rgba(85,107,47,0.16), transparent 55%),
+    var(--color-bg);
+  color: var(--color-text);
+}
+
+/* =========================
+  LIGHT MODE
+   ========================= */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+
+    /* Warm “paper” background */
+    --color-bg: #f6f4ee;
+
+    /* Soft surfaces that feel natural */
+    --color-surface: rgba(22, 53, 36, 0.04);
+    --color-border: rgba(22, 53, 36, 0.12);
+
+    /* Typography */
+    --color-text: rgba(22, 53, 36, 0.92);
+    --color-muted: rgba(22, 53, 36, 0.70);
+    --color-subtle: rgba(22, 53, 36, 0.55);
+
+    /* Shadow */
+    --shadow-soft: 0 18px 50px rgba(22,53,36,0.12);
+  }
+
+  body {
+    background:
+      radial-gradient(900px 520px at 15% 8%, rgba(111,138,58,0.16), transparent 55%),
+      radial-gradient(900px 520px at 85% 18%, rgba(22,53,36,0.08), transparent 55%),
+      var(--color-bg);
+  }
+}
+
+/* Manual overrides */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --color-bg: #f6f4ee;
+  --color-surface: rgba(22, 53, 36, 0.04);
+  --color-border: rgba(22, 53, 36, 0.12);
+
+  --color-text: rgba(22, 53, 36, 0.92);
+  --color-muted: rgba(22, 53, 36, 0.70);
+  --color-subtle: rgba(22, 53, 36, 0.55);
+
+  --shadow-soft: 0 18px 50px rgba(22,53,36,0.12);
+}
+
+:root[data-theme="dark"] { color-scheme: dark; }
